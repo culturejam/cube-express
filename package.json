@@ -1,0 +1,23 @@
+{
+  "description": "An Express wrapper for Square's Cube system",
+  "version": "0.1.0",
+  "private": true,
+  "name": "cube-express",
+  "homepage": "https://github.com/culturejam/cube-express",
+  "main": "src/server",
+  "scripts": {
+    "start": "coffee app.coffee",
+    "test": "make test"
+  },
+  "dependencies": {
+    "coffee-script": "1.7.x",
+    "connect-requestid": "1.1.x",
+    "express": "3.3.x",
+    "winston": "0.7.x"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*",
+    "supertest": "0.5.1"
+  }
+}
