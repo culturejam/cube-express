@@ -12,7 +12,7 @@
   "dependencies": {
     "coffee-script": "1.7.x",
     "connect-requestid": "1.1.x",
-    "cube": "0.2.12",
+    "cube": "https://github.com/culturejam/cube/tarball/cube-as-lib",
     "express": "3.3.x",
     "winston": "0.7.x"
   },
