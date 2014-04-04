@@ -29,16 +29,15 @@ cube.database.open options, (error, db) ->
     logger.error "Error connecting to MongoDB database.", error
   else
     # App Configuration
-    app.configure ->
-      app.set('db', db)
-      app.set 'port', (process.env.PORT || 5000)
-      app.set 'version', pkg.version
-      app.use express.logger logFormat
-      app.use express.json()
-      app.use express.methodOverride()
-      app.use express.responseTime()
-      app.use requestid
-      app.use allowCrossDomain
+    app.set('db', db)
+    app.set 'port', (process.env.PORT || 5000)
+    app.set 'version', pkg.version
+    app.use express.logger logFormat
+    app.use express.json()
+    app.use express.methodOverride()
+    app.use express.responseTime()
+    app.use requestid
+    app.use allowCrossDomain
 
     # Routing
     require('./routes/collector')(app)
