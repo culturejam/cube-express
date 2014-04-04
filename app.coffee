@@ -1,4 +1,5 @@
 require('coffee-script')
+config    = require("./config")
 cube      = require("cube")
 express   = require('express')
 http      = require('http')
@@ -23,14 +24,13 @@ allowCrossDomain = (req, res, next) ->
   next()
 
 # Connect to database and configure server.
-options = "mongo-url": process.env.MONGODB_URL
-cube.database.open options, (error, db) ->
+cube.database.open {"mongo-url": config.mongoUrl}, (error, db) ->
   if error
     logger.error "Error connecting to MongoDB database.", error
   else
     # App Configuration
     app.set('db', db)
-    app.set 'port', (process.env.PORT || 5000)
+    app.set 'port', config.port
     app.set 'version', pkg.version
     app.use express.logger logFormat
     app.use express.json()
@@ -40,10 +40,8 @@ cube.database.open options, (error, db) ->
     app.use allowCrossDomain
 
     # Basic auth
-    basicUser = process.env.BASIC_AUTH_USERNAME || false
-    basicPass = process.env.BASIC_AUTH_PASSWORD || false
-    if basicUser && basicPass
-      app.use express.basicAuth(basicUser, basicPass)
+    if config.basicAuthUser && config.basicAuthPass
+      app.use express.basicAuth(config.basicAuthUser, config.basicAuthPass)
 
     # Routing
     require('./routes/collector')(app)
