@@ -39,6 +39,12 @@ cube.database.open options, (error, db) ->
     app.use requestid
     app.use allowCrossDomain
 
+    # Basic auth
+    basicUser = process.env.BASIC_AUTH_USERNAME || false
+    basicPass = process.env.BASIC_AUTH_PASSWORD || false
+    if basicUser && basicPass
+      app.use express.basicAuth(basicUser, basicPass)
+
     # Routing
     require('./routes/collector')(app)
     require('./routes/evaluator')(app)
