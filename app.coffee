@@ -38,10 +38,21 @@ app.use (err, req, res, next) ->
   res.send 500
 
 
-http.createServer(app).listen app.get('port'), () ->
-  logger.info "at=server_start msg=\"Cube Express started.\" " +
-              "version=#{app.get('version')} " +
-              "port=#{app.get('port')} " +
-              "environment=#{app.get('env')}"
+# Connect to database and start server.
+cube = require("cube")
+options = "mongo-url": process.env.MONGODB_URL
+cube.database.open options, (error, db) ->
+  if error
+    logger.error "Error opening database.", error
+    throw "Couldn't open database."
+  else
+    logger.info "Connected to database.", options
+    app.db = db
+    http.createServer(app).listen app.get('port'), () ->
+      logger.info "Cube Express server started.",
+        at: "server_start"
+        version: app.get('version')
+        port: app.get('port')
+        environment: app.get('env')
 
 module.exports = app
