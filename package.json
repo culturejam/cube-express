@@ -6,7 +6,7 @@
   "homepage": "https://github.com/culturejam/cube-express",
   "main": "src/server",
   "scripts": {
-    "start": "coffee app.coffee",
+    "start": "coffee bin/server.coffee",
     "test": "make test"
   },
   "dependencies": {

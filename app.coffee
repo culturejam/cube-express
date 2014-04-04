@@ -23,43 +23,47 @@ allowCrossDomain = (req, res, next) ->
   res.header('Access-Control-Allow-Headers', 'X-Requested-With')
   next()
 
+app.set 'port', config.port
+app.set 'version', pkg.version
+app.use express.logger logFormat
+app.use express.json()
+app.use express.methodOverride()
+app.use express.responseTime()
+app.use requestid
+app.use allowCrossDomain
+
+# Basic auth
+if config.basicAuthUser && config.basicAuthPass
+  app.use express.basicAuth(config.basicAuthUser, config.basicAuthPass)
+
 # Connect to database and configure server.
-cube.database.open {"mongo-url": config.mongoUrl}, (error, db) ->
-  if error
-    logger.error "Error connecting to MongoDB database.", error
-  else
-    # App Configuration
-    app.set('db', db)
-    app.set 'port', config.port
-    app.set 'version', pkg.version
-    app.use express.logger logFormat
-    app.use express.json()
-    app.use express.methodOverride()
-    app.use express.responseTime()
-    app.use requestid
-    app.use allowCrossDomain
+start = (callback) ->
+  cube.database.open {"mongo-url": config.mongoUrl}, (error, db) ->
+    if error
+      logger.error "Error connecting to MongoDB database.", error
+    else
+      # App Configuration
+      app.set('db', db)
 
-    # Basic auth
-    if config.basicAuthUser && config.basicAuthPass
-      app.use express.basicAuth(config.basicAuthUser, config.basicAuthPass)
+      # Routing
+      require('./routes/collector')(app)
+      require('./routes/evaluator')(app)
 
-    # Routing
-    require('./routes/collector')(app)
-    require('./routes/evaluator')(app)
+      #404 - Catch all
+      app.use (req, res) -> res.send 404, "Not found."
 
-    #404 - Catch all
-    app.use (req, res) -> res.send 404, "Not found."
+      # Error handling
+      app.use (err, req, res, next) ->
+        logger.error err.stack
+        res.send 500
 
-    # Error handling
-    app.use (err, req, res, next) ->
-      logger.error err.stack
-      res.send 500
+      http.createServer(app).listen app.get('port'), ->
+        logger.info "Cube Express server started.",
+          at: "server_start"
+          version: app.get('version')
+          port: app.get('port')
+          environment: app.get('env')
 
-    http.createServer(app).listen app.get('port'), () ->
-      logger.info "Cube Express server started.",
-        at: "server_start"
-        version: app.get('version')
-        port: app.get('port')
-        environment: app.get('env')
+      callback() if callback
 
-module.exports = app
+module.exports = {server: app, start: start}
