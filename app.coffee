@@ -24,10 +24,9 @@ app.configure ->
   app.use express.responseTime()
   app.use requestid
 
-#
-# Routes
-#
-app.get '/', (req, res) -> res.send "Hello world."
+
+# Routing
+require('./routes')(app)
 
 #404 - Catch all
 app.use (req, res) -> res.send 404, "Not found."
