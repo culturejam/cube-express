@@ -19,7 +19,7 @@ app.configure ->
   app.set 'port', (process.env.PORT || 5000)
   app.set 'version', pkg.version
   app.use express.logger logFormat
-  app.use express.bodyParser()
+  app.use express.json()
   app.use express.methodOverride()
   app.use express.responseTime()
   app.use requestid
