@@ -14,6 +14,13 @@ logFormat = 'at=request status=:status method=:method path=:url ' +
             'referrer=:referrer user-agent=":user-agent" ' +
             'bytes=:res[Content-Length]'
 
+# CORS
+allowCrossDomain = (req, res, next) ->
+  res.header('Access-Control-Allow-Origin', "*")
+  res.header('Access-Control-Allow-Headers', 'Content-Type')
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With')
+  next()
+
 # App Configuration
 app.configure ->
   app.set 'port', (process.env.PORT || 5000)
@@ -23,6 +30,7 @@ app.configure ->
   app.use express.methodOverride()
   app.use express.responseTime()
   app.use requestid
+  app.use allowCrossDomain
 
 
 # Routing
