@@ -5,8 +5,9 @@ test:
 		--reporter $(REPORTER) \
         --compilers coffee:coffee-script/register \
         --require should \
-		--ui bdd \
-		test/**/*.coffee
+	--ui bdd \
+	--recursive
+	./test/
 
 .PHONY: build clean watch test
 
