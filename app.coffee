@@ -42,7 +42,6 @@ start = (callback) ->
     if error
       logger.error "Error connecting to MongoDB database.", error
     else
-      # App Configuration
       app.set('db', db)
 
       # Routing
