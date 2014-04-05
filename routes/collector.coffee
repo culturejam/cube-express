@@ -2,6 +2,7 @@ cube = require("cube")
 logger = require("logfmt")
 
 module.exports = (app) ->
+  logger.log(at: "info", msg: "Enabling Cube evaluator HTTP routes.")
   db = app.get('db')
   postEvent = (req, res) ->
     try

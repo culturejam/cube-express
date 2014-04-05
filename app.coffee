@@ -37,8 +37,8 @@ start = (callback) ->
       app.set('db', db)
 
       # Routing
-      require('./routes/collector')(app)
-      require('./routes/evaluator')(app)
+      require('./routes/collector')(app) if config.is(config.enableCollector)
+      require('./routes/evaluator')(app) if config.is(config.enableEvaluator)
 
       #404 - Catch all
       app.use (req, res) -> res.send 404, "Not found."
