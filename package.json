@@ -14,7 +14,7 @@
     "connect-requestid": "1.1.x",
     "cube": "https://github.com/culturejam/cube/tarball/cube-as-lib",
     "express": "3.3.x",
-    "winston": "0.7.x"
+    "logfmt": "1.1.x"
   },
   "devDependencies": {
     "mocha": "*",

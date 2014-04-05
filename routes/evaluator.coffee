@@ -1,5 +1,4 @@
 cube = require("cube")
-logger = require('winston')
 
 module.exports = (app) ->
   db = app.get('db')

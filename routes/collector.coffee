@@ -1,5 +1,5 @@
 cube = require("cube")
-logger = require('winston')
+logger = require("logfmt")
 
 module.exports = (app) ->
   db = app.get('db')
@@ -9,7 +9,7 @@ module.exports = (app) ->
       req.body.forEach(putter)
       res.send {}
     catch e
-      logger.error "Error while putting event.", { error: e.toString() }
+      logger.log msg: "Couldn't put events. Most likely user input error.", error: e
       res.send 400, { error: e.toString() }
 
   app.post '/1.0/event', postEvent
