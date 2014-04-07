@@ -1,6 +1,6 @@
 module.exports =
-  basicAuthPass: process.env.BASIC_AUTH_PASS || false
-  basicAuthUser: process.env.BASIC_AUTH_USER || false
+  basicAuthPassword: process.env.BASIC_AUTH_PASSWORD || false
+  basicAuthUsername: process.env.BASIC_AUTH_USERNAME || false
   enableCollector: process.env.ENABLE_COLLECTOR
   enableEvaluator: process.env.ENABLE_EVALUATOR
   mongoUrl: process.env.MONGODB_URL

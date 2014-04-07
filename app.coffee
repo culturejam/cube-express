@@ -25,8 +25,9 @@ app.use requestid
 app.use allowCrossDomain
 
 # Basic auth
-if config.basicAuthUser && config.basicAuthPass
-  app.use express.basicAuth(config.basicAuthUser, config.basicAuthPass)
+if config.is(config.basicAuthUsername) && config.is(config.basicAuthPassword)
+  logger.log(msg: "Enabling BASIC authentication.", username: config.basicAuthUsername)
+  app.use express.basicAuth(config.basicAuthUsername, config.basicAuthPassword)
 
 # Connect to database and configure server.
 start = (callback) ->
